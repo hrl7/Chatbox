@@ -22,6 +22,10 @@ class CommentsController < ApplicationController
   def edit
   end
 
+  def home
+
+  end
+
   # POST /comments
   # POST /comments.json
   def create
