@@ -18,6 +18,7 @@ gem 'therubyracer'
 gem 'less-rails'
 gem 'twitter-bootstrap-rails'
 
+gem 'simple_token_authentication', '~> 1.0' 
 gem "jquery-rails"
 gem 'devise'
 
