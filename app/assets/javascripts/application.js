@@ -8,3 +8,59 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require_tree .
+
+
+console.log("Hello world");
+var token = null,email = null;
+
+function fetchToken(){
+  $.ajax({
+    type: "GET",
+    success: function(res){
+      token = res.token;
+      email = res.email;
+    },
+    url: "/api/v0/user/grant",
+  }); 
+}
+
+function comments(){
+  if(token){
+    $.ajax({
+      url: "/comments.json",
+      headers: {
+        "X-User-Token" : token,
+        "X-User-Email" : email,
+      },
+      success:function(res){
+        console.log(res);
+      },
+      type:"GET"
+    });
+  }else{
+    console.log("Need to auth token");
+  }
+}
+
+function postComment(body){
+  if(token){
+    $.ajax({
+      url: "/comments.json",
+      headers: {
+        "X-User-Token" : token,
+        "X-User-Email" : email,
+      },
+      success:function(res){
+        console.log(res);
+      },
+      type:"POST",
+      data: {
+        comment: {
+          body : body
+        }
+      },
+    });
+  }else{
+    console.log("Need to auth token");
+  }
+}

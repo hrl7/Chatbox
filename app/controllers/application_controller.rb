@@ -5,9 +5,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session, :if => Proc.new { |c| c.request.format == 'application/json' }
   acts_as_token_authentication_handler_for User
 
-  layout false
-
   def grant 
-    render json: {token: current_user.authentication_token}
+    render json: {token: current_user.authentication_token, email: current_user.email}
   end
 end
