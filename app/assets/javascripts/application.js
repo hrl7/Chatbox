@@ -26,7 +26,8 @@ window.onload = function(){
 function registerPostEvent(){
   var input = document.querySelector(".chat-input");
   input.onkeydown = function(e){
-    if(e.keyCode == 13){
+    console.log(e);
+    if(!e.shiftKey && e.keyCode == 13){
       console.log(input.value);
       postComment(input.children[0].value);
     }
@@ -37,9 +38,39 @@ function renderComments(){
   var view = document.querySelector(".chat-view");
   view.innerHTML = ""; 
   for(var i = 0;i < comments.length; i++){
-    var com = document.createElement("div"); 
-    com.textContent = comments[i].body;
-    view.appendChild(com);
+    var comment = document.createElement("div");
+    var left = document.createElement("div");
+    var name = document.createElement("h5");
+    var thum = document.createElement("img");
+    var body= document.createElement("div"); 
+    var message = document.createElement("div"); 
+    var time = document.createElement("div"); 
+    comment.classList.add("chat-comment");
+    comment.classList.add("panel");
+    comment.classList.add("panel-default");
+    comment.classList.add("media");
+    name.classList.add("chat-username");
+    name.classList.add("media-heading");
+    thum.classList.add("chat-thumbnail");
+    thum.classList.add("media-object");
+    left.classList.add("media-left");
+    body.classList.add("chat-body");
+    body.classList.add("media-body");
+    time.classList.add("chat-time");
+
+    time.textContent = comments[i].created_at;
+    name.textContent = comments[i].name;
+    thum.src = comments[i].avatar.avatar.url;
+    message.innerHTML= comments[i].body.replace("\n","<br>","g");
+
+    body.appendChild(name);
+    body.appendChild(message);
+    comment.appendChild(time);
+    left.appendChild(thum);
+    comment.appendChild(left);
+    comment.appendChild(body);
+
+    view.appendChild(comment);
   }
 };
 
