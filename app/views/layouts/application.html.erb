@@ -49,15 +49,17 @@
         <div class="navbar-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
             <li><%= link_to "Link1", "/comments"  %></li>
-            <li>
-              <a href="/users/edit">
-                <%= image_tag(current_user.avatar.url) %>
-                <%= current_user.name%> 
-              </a>
-            </li>
-            <li>
-              <%= link_to("Logout",destroy_user_session_path,{method: :delete}) %>
-            </li>
+            <% if user_signed_in? %>
+              <li>
+                <a href="/users/edit">
+                  <%= image_tag(current_user.avatar.url) %>
+                  <%= current_user.name%> 
+                </a>
+              </li>
+              <li>
+                <%= link_to("Logout",destroy_user_session_path,{method: :delete}) %>
+              </li>
+          <% end %>
           </ul>
         </div>
       </div>
