@@ -51,9 +51,11 @@
             <li><%= link_to "Link1", "/comments"  %></li>
             <% if user_signed_in? %>
               <li>
-                <a href="/users/edit">
+                <a  href="/users/edit">
                   <%= image_tag(current_user.avatar.url) %>
-                  <%= current_user.name%> 
+                  <span id="username">
+                    <%= current_user.name%> 
+                  </span>
                 </a>
               </li>
               <li>

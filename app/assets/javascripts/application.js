@@ -10,11 +10,15 @@
 //= require_tree .
 
 
-var token = null,email = null, comments = [], polling = null;
+var token = null,email = null, comments = [], polling = null, notifier = null, username = null;
+
 window.onload = function(){
+  username = document.querySelector("#username").textContent.replace(/\s/g,"");
   fetchToken()
     .then(fetchComments)
-    .then(renderComments);
+    .then(renderComments)
+    .then(requestNotificationPermission)
+    .then(registerNotification);
 
   registerPostEvent();
   startPoll();
@@ -32,6 +36,28 @@ function stopPoll(){
   if(polling){
     clearInterval(polling);
     polling = null;
+  }
+}
+
+function requestNotificationPermission(){
+  return new Promise(function(resolve, reject){
+    if(("Notification" in window) && Notification.permission !== 'denied') {
+      Notification.requestPermission(function(permission){
+        if(permission == "granted"){
+          resolve();
+        }  else {
+          reject();
+        }
+      });
+    } else {
+      reject();
+    }   
+  });
+}
+
+function registerNotification(){
+  notifier = function(message,icon,title){
+    new Notification(message,icon,title);
   }
 }
 
@@ -108,12 +134,21 @@ function fetchComments(){
         url: "/comments.json",
         headers: {
           "X-User-Token" : token,
-          "X-User-Email" : email,
+        "X-User-Email" : email,
         },
         success:function(res){
-          comments = res;
-          resolve();
-        },
+                  if(notifier && username && res.length != comments.length){
+                    var latestComment = res[res.length-1];
+                    if( latestComment.name != username){
+                      notifier(latestComment.name,{ 
+                        body: latestComment.body, 
+                        icon: latestComment.avatar.avatar.url
+                      });
+                    }
+                  }
+                  comments = res;
+                  resolve();
+                },
         type:"GET"
       });
     }else{
@@ -129,16 +164,16 @@ function postComment(body){
         url: "/comments.json",
         headers: {
           "X-User-Token" : token,
-          "X-User-Email" : email,
+        "X-User-Email" : email,
         },
         success:function(res){
-          document.querySelector(".chat-input").children[0].value = "";
-        },
+                  document.querySelector(".chat-input").children[0].value = "";
+                },
         type:"POST",
         data: {
           comment: {
-            body : body
-          }
+                     body : body
+                   }
         },
       });
     }else{
