@@ -27,6 +27,7 @@ set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/
 
 # Default value for linked_dirs is []
 # Default value for default_env is {}
+set :linked_dirs, %w{public/uploads}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 set :default_env , {
   rbenv_root: "/home/ops/.rbenv",
