@@ -10,17 +10,29 @@
 //= require_tree .
 
 
-var token = null,email = null, comments = [];
+var token = null,email = null, comments = [], polling = null;
 window.onload = function(){
   fetchToken()
     .then(fetchComments)
     .then(renderComments);
 
   registerPostEvent();
-  setInterval(function(){
+  startPoll();
+}
+
+function startPoll(){
+  if(polling)return;
+  polling = setInterval(function(){
     fetchComments()
     .then(renderComments);
   },1000);
+}
+
+function stopPoll(){
+  if(polling){
+    clearInterval(polling);
+    polling = null;
+  }
 }
 
 function registerPostEvent(){
