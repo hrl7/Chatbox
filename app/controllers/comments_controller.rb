@@ -8,6 +8,10 @@ class CommentsController < ApplicationController
     @comments = Comment.includes(:user).all
   end
 
+  def count
+    @comments = Comment.all
+  end
+
   # GET /comments/1
   # GET /comments/1.json
   def show

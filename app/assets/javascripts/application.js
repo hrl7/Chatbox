@@ -27,7 +27,8 @@ window.onload = function(){
 function startPoll(){
   if(polling)return;
   polling = setInterval(function(){
-    fetchComments()
+    fetchLastCommentIndex()
+    .then(fetchComments)
     .then(renderComments);
   },1000);
 }
@@ -64,9 +65,7 @@ function registerNotification(){
 function registerPostEvent(){
   var input = document.querySelector(".chat-input");
   input.onkeydown = function(e){
-    console.log(e);
     if(!e.shiftKey && e.keyCode == 13){
-      console.log(input.value);
       postComment(input.children[0].value);
     }
   }
@@ -126,6 +125,33 @@ function fetchToken(){
     }); 
   });
 }
+
+function fetchLastCommentIndex(){
+  return new Promise(function(resolve, reject){
+    if(token){
+      $.ajax({
+        url: "/api/v0/comment/latest.json",
+        headers: {
+          "X-User-Token" : token,
+          "X-User-Email" : email,
+        },
+        success:function(res){
+          if(!comments){
+            resolve();
+          } else if(res.id > comments[comments.length-1].id){
+            resolve();
+          } else {
+            reject();
+          }
+        },
+        type:"GET"
+      });
+    }else{
+      reject("Need to auth token");
+    }
+  });
+}
+
 
 function fetchComments(){
   return new Promise(function(resolve, reject){

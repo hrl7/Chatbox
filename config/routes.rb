@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   }
 
   get 'api/v0/user/grant' => 'application#grant' 
+  get 'api/v0/comment/latest' => 'comments#count' 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
