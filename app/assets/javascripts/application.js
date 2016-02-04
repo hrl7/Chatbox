@@ -65,9 +65,19 @@ function registerNotification(){
 function registerPostEvent(){
   var input = document.querySelector(".chat-input");
   input.onkeydown = function(e){
-    if(!e.shiftKey && e.keyCode == 13){
+    if(isPostKeyEvent(e)){
       postComment(input.children[0].value);
     }
+  }
+}
+
+function isPostKeyEvent(e){
+  switch(post_method){
+    case "meta_enter":
+      return e.keyCode == 13 && e.metaKey && !e.shiftKey && !e.ctrlKey && !e.altKey;
+    case "enter":
+    default:
+      return e.keyCode == 13 && !e.metaKey && !e.shiftKey && !e.ctrlKey && !e.altKey;
   }
 }
 

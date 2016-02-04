@@ -45,10 +45,11 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Chatbox</a>
+        <a class="navbar-brand" href="/">Chatbox</a>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
-            <li><%= link_to "Link1", "/comments"  %></li>
+            <li><%= link_to "Debug", "/comments"  %></li>
+            <li><%= link_to "Setting", settings_path  %></li>
             <% if user_signed_in? %>
               <li>
                 <a  href="/users/edit">
