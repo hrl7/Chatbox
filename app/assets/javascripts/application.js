@@ -10,10 +10,12 @@
 //= require_tree .
 
 
-var token = null,email = null, comments = [], polling = null, notifier = null, username = null;
+var token = null,email = null, comments = [], polling = null, notifier = null, username = null, input = null, postButton = null;
 
 window.onload = function(){
   username = document.querySelector("#username").textContent.replace(/\s/g,"");
+  input = document.querySelector(".chat-input");
+  postButton = document.querySelector("#post-button");
   fetchToken()
     .then(fetchComments)
     .then(renderComments)
@@ -63,16 +65,24 @@ function registerNotification(){
 }
 
 function registerPostEvent(){
-  var input = document.querySelector(".chat-input");
   input.onkeydown = function(e){
-    if(isPostKeyEvent(e)){
-      postComment(input.children[0].value);
+    if(isPostEvent(e)){
+      postCommentWithInputValue();
     }
+  }
+  if(postButton){
+    postButton.onclick= postCommentWithInputValue;
   }
 }
 
-function isPostKeyEvent(e){
+function postCommentWithInputValue(){
+  postComment(input.children[0].value);
+}
+
+function isPostEvent(e){
   switch(post_method){
+    case "button":
+      return false;
     case "meta_enter":
       return e.keyCode == 13 && e.metaKey && !e.shiftKey && !e.ctrlKey && !e.altKey;
     case "enter":

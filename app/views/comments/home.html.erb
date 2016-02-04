@@ -5,4 +5,7 @@
 <div class="chat-input">
   <textarea class="form-control chat-message" type="text" rows="3">
   </textarea>
+  <% if current_user.try(:setting).try(:button?)%>
+    <input class="btn btn-primary" style="float:right;" type="button" value="Post" id="post-button">
+  <% end %>
 </div>
