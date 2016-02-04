@@ -1,5 +1,5 @@
 <script>
-  var post_method = "<%= current_user.setting.post_method %>";
+  var post_method = "<%= current_user.try(:setting).try(:post_method) %>";
 </script>
 <div class="chat-view default-media"></div>
 <div class="chat-input">
