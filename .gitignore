@@ -132,3 +132,5 @@ build/
 .rvmrc
 
 public/uploads
+
+config/deploy*
